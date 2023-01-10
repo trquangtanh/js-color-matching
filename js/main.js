@@ -1,5 +1,5 @@
 import { GAME_STATUS, GAME_TIME, PAIRS_COUNT } from './constants.js'
-import {createTime, getRandomColorPairs, hidePlayAgainButton, setTimeText, showPlayAgainButton}from'./utils.js'
+import {createTime, getRandomColorPairs, hidePlayAgainButton, setBackgroundColor, setTimeText, showPlayAgainButton}from'./utils.js'
 import{getColorBackground,
     getColorElementList,
     getTimerElement,
@@ -10,7 +10,7 @@ import{getColorBackground,
 let selections = []
 let gameStatu = GAME_STATUS.PLAYING
 let timer=createTime({
-    second:5,
+    second:GAME_TIME,
     onChange: handleTimeChange,
     onFinish: handleTimeFinish,
 }) 
@@ -47,7 +47,10 @@ function HandleColorClick(liElement){
     const firtsColor=selections[0].dataset.color;
     const secondColor=selections[1].dataset.color;
     const isMatch=firtsColor===secondColor;
+
     if(isMatch){
+        // can use either first or second color (as they are the same)
+        setBackgroundColor(firtsColor)
         const isWin=getInActiveColorList().length===0
         if(isWin){
             showPlayAgainButton()
@@ -106,6 +109,8 @@ function HandleColorClick(liElement){
     setTimeText('')
     // re-generate new color
     initColors()
+    // reset background color
+    setBackgroundColor('rgb(63, 169, 222)')
     // start new game
     startTimer()
  }
